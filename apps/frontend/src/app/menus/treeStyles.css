@@ -1,0 +1,148 @@
+.custom-tree,
+.custom-tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base tree container */
+.custom-tree {
+  position: relative;
+  padding-left: 16px;
+}
+
+/* Each list item */
+.custom-tree li {
+  position: relative;
+  padding-left: 24px;
+}
+
+/* Vertical line */
+.custom-tree li::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 10px;
+  bottom: 0;
+  border-left: 1px solid #c9c9c9;
+}
+
+
+/* Horizontal connector (branch line) */
+.custom-tree li::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  /* visually aligned with text baseline */
+  left: 10px;
+  width: 16px;
+  /* slightly longer to touch text */
+  border-top: 1px solid #c9c9c9;
+}
+
+/* Node row styling */
+.node-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.node-row:hover {
+  background: rgba(13, 110, 253, 0.05);
+}
+
+.node-row.selected {
+  background: rgba(13, 110, 253, 0.12);
+  border-left: 3px solid rgba(13, 110, 253, 0.9);
+  padding-left: 5px;
+}
+
+/* Caret and placeholder */
+.caret-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  transform: translateY(1px);
+  transition: transform 0.2s ease;
+}
+
+.caret-btn.expanded .caret-icon {
+  transform: rotate(0deg);
+}
+
+.caret-icon {
+  width: 16px;
+  height: 16px;
+  stroke: #1e293b;
+  transition: transform 0.2s ease;
+  transform: rotate(-90deg);
+  /* collapsed state (right arrow) */
+}
+
+
+/* placeholder keeps spacing when no caret */
+.caret-placeholder {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+}
+
+/* Label */
+.node-label {
+  font-size: 15px;
+  color: #111827;
+  user-select: none;
+}
+
+/* Children list */
+.node-children {
+  margin-left: 20px;
+  padding-left: 4px;
+}
+
+/* Fix for smoother vertical continuity */
+.custom-tree ul>li:first-child::before {
+  top: -6px;
+}
+
+/* Perfectly align last child's vertical connector */
+.custom-tree li:last-child::before {
+  bottom: 14px;
+  /* same as horizontal line top */
+}
+
+
+.tree-node::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #d0d0d0;
+}
+
+.tree-node::after {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 12px;
+  width: 12px;
+  height: 1px;
+  background-color: #d0d0d0;
+}
+
+.tree-node:last-child::before {
+  bottom: auto;
+  height: 12px;
+}
