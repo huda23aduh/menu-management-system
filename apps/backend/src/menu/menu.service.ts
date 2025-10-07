@@ -11,6 +11,14 @@ export class MenuService {
   async findAll() {
     const flat = await this.prisma.menu.findMany({
       orderBy: { createdAt: 'asc' },
+      include: {
+        parent: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      },
     });
     return buildTree(flat);
   }
@@ -49,16 +57,20 @@ export class MenuService {
 }
 
 // helper
-function buildTree(items: Menu[]): MenuWithChildren[] {
+function buildTree(items: any[]): MenuWithChildren[] {
   const map = new Map<string, MenuWithChildren>();
   const roots: MenuWithChildren[] = [];
 
-  // Create map entries
+  // Create map entries - now includes parent data from Prisma
   items.forEach(item => {
-    map.set(item.id, { ...item, children: [] });
+    map.set(item.id, {
+      ...item,
+      children: [],
+      parent: item.parent ? { id: item.parent.id, name: item.parent.name } : null
+    });
   });
 
-  // Build tree structure
+  // Build tree structure - this part remains exactly the same
   for (const item of Array.from(map.values())) {
     if (item.parentId && map.has(item.parentId)) {
       const parent = map.get(item.parentId);
