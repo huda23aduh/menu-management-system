@@ -1,17 +1,32 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+// apps/frontend/src/services/menuService.ts
+import { MenuItem } from '@/types/menu';
 
-export async function fetchMenus() {
-  const res = await fetch(`${API_URL}/menus`, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to fetch menus");
-  return res.json();
-}
+const API_BASE_URL = 'http://localhost:3001';
 
-export async function createMenu(data: { name: string; parentId?: string }) {
-  const res = await fetch(`${API_URL}/menus`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) throw new Error("Failed to create menu");
-  return res.json();
-}
+export const menuService = {
+  async fetchMenus(): Promise<MenuItem[]> {
+    const response = await fetch(`${API_BASE_URL}/menus`);
+    if (!response.ok) throw new Error('Failed to fetch menus');
+    return response.json();
+  },
+
+  async createMenu(payload: { name: string; parentId?: string }): Promise<MenuItem> {
+    const response = await fetch(`${API_BASE_URL}/menus`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error('Failed to create menu');
+    return response.json();
+  },
+
+  async updateMenu(id: string, payload: { name: string }): Promise<MenuItem> {
+    const response = await fetch(`${API_BASE_URL}/menus/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error('Failed to update menu');
+    return response.json();
+  },
+};
